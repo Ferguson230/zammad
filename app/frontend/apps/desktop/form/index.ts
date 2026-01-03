@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { defineAsyncComponent, type App } from 'vue'
 
@@ -57,9 +57,9 @@ export const initializeFormFields = () => {
   })
 
   initializeFieldLinkClasses({
-    container: 'formkit-link',
-    base: 'ms-3 mb-2.5',
-    link: 'hover:rounded-xs hover:outline hover:outline-1 hover:outline-offset-1 hover:outline-blue-600 dark:hover:outline-blue-900',
+    container: 'formkit-link min-h-10 flex items-center',
+    base: 'ms-2',
+    link: 'w-min h-min min-h-min shrink-0 flex-nowrap items-center justify-center gap-x-1 border-0 font-normal shadow-none transition-transform duration-200 hover:outline-1 hover:outline-offset-1 hover:outline-blue-600 focus:outline-0 focus:hover:outline-1 focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:outline-blue-800 focus:active:scale-[95%] dark:hover:outline-blue-900 text-blue-800 hover:text-blue-850 dark:hover:text-blue-600 text-base p-2 rounded-lg',
   })
 
   initializeFormGroupClasses({
@@ -86,7 +86,8 @@ export const initializeFormFields = () => {
       },
     },
     input: {
-      container: 'px-2.5 py-2',
+      container:
+        'px-2.5 py-2 formkit-invalid:outline formkit-invalid:outline-1 formkit-invalid:-outline-offset-1 formkit-errors:-outline-offset-1  formkit-invalid:outline-red-500 formkit-errors:outline formkit-errors:outline-1 formkit-errors:outline-red-500 formkit-warning:outline-1 formkit-warning:outline-yellow-600! formkit-warning:-outline-offset-1 ',
       inlineContainer: 'px-1.5! py-1!',
     },
   })

@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import type { FormRef, FormValues } from '#shared/components/Form/types.ts'
 import type { TicketById } from '#shared/entities/ticket/types.ts'
@@ -18,7 +18,6 @@ export interface TicketSidebarContext {
   form?: FormRef
   formValues: FormValues
   currentTaskbarTabId?: Ref<string | undefined>
-  setSkipNextStateUpdate?: (skip: boolean) => void
 }
 
 export enum TicketSidebarButtonBadgeType {

@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import Form from '#shared/components/Form/Form.vue'
@@ -93,7 +93,7 @@ const changedFormField = (
 
 const saveObject = async (formData: FormSubmitData) => {
   const { internalObjectAttributeValues, additionalObjectAttributeValues } =
-    useObjectAttributeFormData(objectAttributesLookup.value, formData)
+    useObjectAttributeFormData(props.type, objectAttributesLookup.value, formData)
 
   const result = await updateMutation.send({
     id: props.object?.id,

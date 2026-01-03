@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import { computed } from 'vue'
@@ -34,7 +34,7 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
 </script>
 
 <template>
-  <div class="flex items-center" :class="{ 'gap-2': !titleSize, 'gap-3': titleSize }">
+  <div class="flex items-center w-full" :class="{ 'gap-2': !titleSize, 'gap-3': titleSize }">
     <component
       :is="avatarComponent"
       :class="{
@@ -99,5 +99,6 @@ const labelSize = computed(() => (props.size === 'normal' ? 'large' : 'medium'))
         </CommonLabel>
       </CommonLink>
     </div>
+    <slot name="actions" />
   </div>
 </template>

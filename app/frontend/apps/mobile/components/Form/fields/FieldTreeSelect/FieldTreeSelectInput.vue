@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import { computed, nextTick, ref, toRef } from 'vue'
@@ -63,12 +63,15 @@ const flattenOptions = (
 ): FlatSelectOption[] =>
   options &&
   options.reduce((flatOptions: FlatSelectOption[], { children, ...option }) => {
-    flatOptions.push({
-      ...option,
-      parents,
-      hasChildren: Boolean(children),
-    })
+    flatOptions.push(
+      Object.assign(option, {
+        parents,
+        hasChildren: Boolean(children),
+      }),
+    )
+
     if (children) flatOptions.push(...flattenOptions(children, [...parents, option.value]))
+
     return flatOptions
   }, [])
 

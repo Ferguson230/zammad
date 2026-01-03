@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 /* eslint-disable @typescript-eslint/no-require-imports */
 const defaultTheme = require('tailwindcss/defaultTheme')
@@ -46,6 +46,11 @@ module.exports = plugin(
     ])
     addVariant('formkit-variant-submit', ['[data-variant="submit"] &', '[data-variant="submit"]&'])
     addVariant('formkit-variant-danger', ['[data-variant="danger"] &', '[data-variant="danger"]&'])
+    addVariant('formkit-warning', [
+      '&[data-message-type="warning"]',
+      '[data-message-type="warning"] &',
+      '[data-message-type="warning"]&',
+    ])
   },
   {
     theme: {

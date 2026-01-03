@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { waitFor, within } from '@testing-library/vue'
 
@@ -48,6 +48,8 @@ const user: User = {
   outOfOfficeStartAt: null,
   outOfOfficeEndAt: null,
   hasSecondaryOrganizations: false,
+  source: 'signup',
+  verified: false,
   active: true,
   policy: {
     update: true,
@@ -210,6 +212,54 @@ describe('User Detail View', () => {
       expect(within(header).getByLabelText('Avatar (Nicole Braun)')).toHaveTextContent('NB')
       expect(within(header).getByText('Nicole Braun', { selector: 'span' })).toBeVisible()
       expect(within(header).getByText('Zammad Foundation')).toBeVisible()
+    })
+
+    it('displays actions for agent users', async () => {
+      mockPermissions(['ticket.agent'])
+
+      const view = await visitView('/users/2')
+
+      const main = view.getByRole('main')
+      const header = within(main).getByTestId('user-detail-top-bar')
+
+      expect(within(header).getByRole('menuitem', { name: 'New ticket' })).toBeVisible()
+
+      await view.events.click(within(header).getByRole('button', { name: 'Action menu button' }))
+
+      const actionPopover = await view.findByRole('region', { name: 'Action menu button' })
+
+      expect(within(actionPopover).getByRole('menuitem', { name: 'Edit' })).toBeVisible()
+      expect(within(actionPopover).getByRole('menuitem', { name: 'History' })).toBeVisible()
+      expect(within(header).queryByRole('menuitem', { name: 'Delete' })).not.toBeInTheDocument()
+    })
+
+    it('displays actions for admin users', async () => {
+      mockPermissions(['admin.data_privacy', 'admin.user'])
+
+      const view = await visitView('/users/2')
+
+      const main = view.getByRole('main')
+      const header = within(main).getByTestId('user-detail-top-bar')
+
+      await view.events.click(within(header).getByRole('button', { name: 'Action menu button' }))
+
+      const actionPopover = await view.findByRole('region', { name: 'Action menu button' })
+      expect(within(actionPopover).getByRole('menuitem', { name: 'Delete' })).toBeVisible()
+    })
+
+    it('displays additional actions on some user profiles', async () => {
+      const view = await visitView('/users/2')
+
+      const main = view.getByRole('main')
+      const header = within(main).getByTestId('user-detail-top-bar')
+
+      await view.events.click(within(header).getByRole('button', { name: 'Action menu button' }))
+
+      const actionPopover = await view.findByRole('region', { name: 'Action menu button' })
+
+      expect(
+        within(actionPopover).getByRole('menuitem', { name: 'Resend verification email' }),
+      ).toBeVisible()
     })
   })
 

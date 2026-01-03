@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { getNode } from '@formkit/core'
 import { waitFor, within } from '@testing-library/vue'
@@ -306,6 +306,7 @@ describe('Form.vue', () => {
       'title',
       'Other title',
       'Other titl',
+      false,
     ])
   })
 

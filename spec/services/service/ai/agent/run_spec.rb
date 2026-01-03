@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 require 'rails_helper'
 
@@ -354,6 +354,18 @@ RSpec.describe Service::AI::Agent::Run do
       it 'executes the AI agent service and applies multiple values to the multiselect field' do
         expect { service.execute }
           .to change { ticket.reload.custom_multiselect }.from([]).to(%w[key_1 key_3])
+      end
+
+      context 'when AI returns invalid options for multiselect field', application_handle: 'ai_agent_execution' do
+        let(:ai_result_content) do
+          {
+            'custom_multiselect' => %w[key_1 invalid_key]
+          }
+        end
+
+        it 'raises a PermanentError' do
+          expect { service.execute }.to raise_error(Service::AI::Agent::Run::PermanentError, %r{Custom multiselect contains invalid option: invalid_key})
+        end
       end
     end
 

@@ -27,10 +27,10 @@ class AiProviderSettings extends App.Controller
   constructor: ->
     super
 
-    App.Setting.fetchFull(
-      @render
-      force: false
-    )
+    @subscribeId = App.Setting.subscribe(@render, initFetch: true, clear: false)
+
+  release: =>
+    App.Setting.unsubscribe(@subscribeId)
 
   render: =>
     @html App.view('ai/provider')(
@@ -176,6 +176,36 @@ class ProviderForm extends App.Controller
         autocomplete: 'off'
         value:        params.url_embeddings
       }
+      ocr_active: {
+        name:         'ocr_active'
+        display:      __('Recognize image text (OCR)')
+        tag:          'switch'
+        null:         true
+        label_class:  'hidden'
+        default:      false
+        value:        params.ocr_active
+      }
+      ocr_model: {
+        name:         'ocr_model'
+        display:      __('OCR Model')
+        tag:          'input'
+        placeholder:  provider.default_ocr_model or ''
+        type:         'text'
+        null:         true
+        autocomplete: 'off'
+        value:        params.ocr_model
+        note:         __('Leave empty to use the base model')
+      }
+      url_ocr: {
+        name:         'url_ocr'
+        display:      __('URL (OCR)')
+        tag:          'input'
+        type:         'text'
+        null:         not _.contains(provider.required, 'url_ocr')
+        autocomplete: 'off'
+        value:        params.url_ocr
+        note:         __('Leave empty to use URL (Completions)')
+      }
     }
 
 
@@ -237,15 +267,6 @@ class ProviderForm extends App.Controller
 
     params = @formParam(e.target)
 
-    selectedProvider = @providers[params.provider]
-
-    if selectedProvider?.key
-      params.provider = selectedProvider.key
-    else
-      params = {}
-
-    params = @formParam(e.target)
-
     errors = @providerSettingsForm.validate(params)
 
     # show errors in form
@@ -264,6 +285,13 @@ class ProviderForm extends App.Controller
 
     if not params.model or params.model.trim() is ''
       delete params.model
+
+    savedProviderConfig = App.Setting.get('ai_provider_config')
+
+    # Add token to params when it's present in the current setting data but not in the params
+    # (but only if it's the same provider). E.g. because the token can not be changed in the UI.
+    if has_provider && !params.hasOwnProperty('token') && savedProviderConfig.provider == params.provider && savedProviderConfig.token
+      params.token = savedProviderConfig.token
 
     App.Setting.set('ai_provider_config', params, done: =>
       App.Setting.set('ai_provider', has_provider, notify: true)

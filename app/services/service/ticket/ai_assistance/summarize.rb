@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class Service::Ticket::AIAssistance::Summarize < Service::BaseWithCurrentUser
   attr_reader :ticket, :locale, :persistence_strategy, :regeneration_of
@@ -19,12 +19,20 @@ class Service::Ticket::AIAssistance::Summarize < Service::BaseWithCurrentUser
 
     return if ticket.articles.none?
 
+    articles = ticket.articles.without_system_notifications
+
+    if persistence_strategy != :stored_only
+      prepared_articles = Service::AI::Ticket::PreProcessArticleContent.new(articles:).execute
+    end
+
     summarize = AI::Service::TicketSummarize.new(
       current_user:,
       locale:,
       context_data:         {
         ticket:,
-        config: Setting.get('ai_assistance_ticket_summary_config')
+        articles:,
+        prepared_articles:,
+        config:            Setting.get('ai_assistance_ticket_summary_config')
       },
       persistence_strategy:,
       regeneration_of:

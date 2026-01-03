@@ -1,10 +1,15 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 <script setup lang="ts">
 import { cloneDeep, isEqual } from 'lodash-es'
 import { computed, reactive, toRef, watch } from 'vue'
 
 import type { SelectValue } from '#shared/components/CommonSelect/types.ts'
 import useValue from '#shared/components/Form/composables/useValue.ts'
+import {
+  GroupAccess,
+  type GroupPermissionReactive,
+  type GroupPermissionsContext,
+} from '#shared/components/Form/fields/FieldGroupPermissions/types.ts'
 import type { TreeSelectOption } from '#shared/components/Form/fields/FieldTreeSelect/types.ts'
 import { useDelegateFocus } from '#shared/composables/useDelegateFocus.ts'
 import getUuid from '#shared/utils/getUuid.ts'
@@ -12,8 +17,6 @@ import getUuid from '#shared/utils/getUuid.ts'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 
 import useFlatSelectOptions from '../FieldTreeSelect/useFlatSelectOptions.ts'
-
-import { GroupAccess, type GroupPermissionReactive, type GroupPermissionsContext } from './types.ts'
 
 interface Props {
   context: GroupPermissionsContext

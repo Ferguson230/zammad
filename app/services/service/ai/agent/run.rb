@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class Service::AI::Agent::Run < Service::Base
   attr_reader :ai_agent, :agent_definition, :action_definition, :ticket, :article
@@ -29,9 +29,11 @@ class Service::AI::Agent::Run < Service::Base
     ai_agent_perform_template = Service::AI::Agent::Run::Perform::Agent.new(ai_agent:, ai_result: ai_agent_result)
 
     begin
-      ticket.perform_changes(ai_agent_perform_template, 'ai_agent', {
-                               article_id: article&.id
-                             })
+      ApplicationHandleInfo.use('ai_agent_execution') do
+        ticket.perform_changes(ai_agent_perform_template, 'ai_agent', {
+                                 article_id: article&.id
+                               })
+      end
     rescue => e
       Rails.logger.error "AI Agent '#{ai_agent.name}' with ID #{ai_agent.id} perform_changes failed for ticket #{ticket.id}."
 

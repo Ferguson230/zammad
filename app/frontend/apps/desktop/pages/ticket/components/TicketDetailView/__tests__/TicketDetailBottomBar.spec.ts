@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { within } from '@testing-library/vue'
 import { ref } from 'vue'
@@ -37,7 +37,6 @@ const renderTicketDetailBottomBar = (props?: Partial<Props>) =>
       liveUserList: [],
       ticketId: ticket.id,
       isTicketAgent: true,
-      setSkipNextStateUpdate: vi.fn(),
       ...props,
     },
     store: true,

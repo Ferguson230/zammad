@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import { useElementBounding, useElementVisibility, useWindowSize } from '@vueuse/core'
@@ -93,14 +93,11 @@ const filteredOptions = computed(() => {
   const filterRegex = new RegExp(escapeRegExp(deaccent(filter.value.trim())), 'i')
 
   return options
-    .map(
-      (option) =>
-        ({
-          ...option,
-
-          // Match options via their de-accented labels.
-          match: filterRegex.exec(deaccent(option.label || String(option.value))),
-        }) as FlatSelectOption,
+    .map((option) =>
+      Object.assign(option, {
+        // Match options via their de-accented labels.
+        match: filterRegex.exec(deaccent(option.label || String(option.value))),
+      }),
     )
     .filter((option) => option.match)
 })

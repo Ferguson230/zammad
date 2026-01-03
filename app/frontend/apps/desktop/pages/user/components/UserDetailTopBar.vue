@@ -1,18 +1,21 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { computed, ref, toRef, type Ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { useCopyToClipboard } from '#shared/composables/useCopyToClipboard.ts'
 import { useTouchDevice } from '#shared/composables/useTouchDevice.ts'
 import type { User } from '#shared/graphql/types.ts'
 import { useApplicationStore } from '#shared/stores/application.ts'
 
+import CommonActionMenu from '#desktop/components/CommonActionMenu/CommonActionMenu.vue'
 import CommonBreadcrumb from '#desktop/components/CommonBreadcrumb/CommonBreadcrumb.vue'
 import CommonButton from '#desktop/components/CommonButton/CommonButton.vue'
 import UserInfo from '#desktop/components/User/UserInfo.vue'
 import { useElementScroll } from '#desktop/composables/useElementScroll.ts'
+import { initializeActionPlugins } from '#desktop/pages/user/components/UserDetailTopBar/actions/index.ts'
 
 interface Props {
   user: User
@@ -72,6 +75,10 @@ const events = computed(() => {
     },
   }
 })
+
+const { topLevelActions, secondLevelActions } = initializeActionPlugins()
+
+const router = useRouter()
 </script>
 
 <template>
@@ -111,7 +118,7 @@ const events = computed(() => {
         />
       </template>
     </CommonBreadcrumb>
-    <div class="flex mx-auto mt-3 w-full max-w-278 h-21">
+    <div class="flex mx-auto mt-3 pe-17 w-full max-w-278 h-21">
       <UserInfo
         :user="user"
         size="normal"
@@ -119,7 +126,28 @@ const events = computed(() => {
         title-size="xl"
         title-class="font-medium"
         no-link
-      />
+      >
+        <template #actions>
+          <div role="menubar" class="rtl:mr-auto ltr:ml-auto flex items-center gap-1">
+            <CommonButton
+              v-for="action in topLevelActions"
+              :key="action.key"
+              role="menuitem"
+              :prefix-icon="action.icon"
+              @click="action?.onClick?.(user, router)"
+            >
+              {{ $t(action.label) }}
+            </CommonButton>
+            <CommonActionMenu
+              button-size="large"
+              role="menuitem"
+              no-single-action-mode
+              :actions="secondLevelActions"
+              :entity="user"
+            />
+          </div>
+        </template>
+      </UserInfo>
     </div>
   </header>
 </template>

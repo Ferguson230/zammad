@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { cloneDeep, keyBy } from 'lodash-es'
 import { computed, ref, type Ref, watch } from 'vue'
@@ -55,11 +55,10 @@ const useSelectOptions = <T extends SelectOption[] | FlatSelectOption[] | AutoCo
           ? variant.heading || ''
           : i18n.t(variant.heading, ...(variant.headingPlaceholder || []))
 
-      return {
-        ...option,
+      return Object.assign(option, {
         label,
         heading,
-      }
+      })
     })
   })
 

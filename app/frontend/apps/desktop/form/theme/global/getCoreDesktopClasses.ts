@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { extendClasses } from '#shared/form/plugins/utils.ts'
 import type { Classes } from '#shared/form/plugins/utils.ts'
@@ -36,7 +36,8 @@ export const getCoreDesktopClasses: FormThemeExtension = (classes: FormThemeClas
       label:
         'formkit-required:required formkit-invalid:text-red-500 formkit-errors:text-red-500 mb-1 block text-sm text-gray-100 dark:text-neutral-400',
       inner: 'rounded-lg text-sm',
-      messages: 'formkit-invalid:text-red-500 formkit-errors:text-red-500 mt-1',
+      messages:
+        'formkit-invalid:text-red-500 formkit-errors:text-red-500 mt-1 formkit-warning:text-yellow-600 formkit-warning:mt-2',
       help: 'mt-1 text-stone-200 dark:text-neutral-500',
       prefixIcon:
         'relative flex h-4 w-4 items-center justify-center fill-current text-stone-200 hover:text-black focus-visible:rounded-xs focus-visible:outline-1 focus-visible:-outline-offset-1 focus-visible:outline-blue-800 ltr:ml-2.5 rtl:mr-2.5 dark:text-neutral-500 dark:hover:text-white',
@@ -62,7 +63,7 @@ export const getCoreDesktopClasses: FormThemeExtension = (classes: FormThemeClas
     checkbox: {
       outer: 'leading-none',
       wrapper: 'inline-flex items-center cursor-pointer select-none',
-      label: 'mb-0! text-sm text-gray-100 dark:text-neutral-400',
+      label: 'mb-0! text-sm text-gray-100 dark:text-neutral-400 formkit-required:after:invisible',
       inner: 'w-5 h-5 flex justify-center items-center ltr:mr-1 rtl:ml-1 formkit-label-hidden:m-0',
       input: 'peer appearance-none focus:outline-hidden focus:ring-0 focus:ring-offset-0',
       decorator:
@@ -86,7 +87,7 @@ export const getCoreDesktopClasses: FormThemeExtension = (classes: FormThemeClas
     ticket: selectInputClasses(classes.ticket),
     toggle: extendClasses(classes.toggle, {
       wrapper: 'flex h-10 flex-row-reverse items-center gap-1.5',
-      label: '!mb-0 grow',
+      label: '!mb-0 grow formkit-required:after:invisible',
       inner: 'leading-[0]',
     }),
     groupPermissions: extendClasses(classes.groupPermissions, {

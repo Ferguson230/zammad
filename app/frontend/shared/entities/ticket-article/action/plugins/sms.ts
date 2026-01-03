@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { EnumTicketArticleSenderName } from '#shared/graphql/types.ts'
 
@@ -63,6 +63,7 @@ const actionPlugin: TicketArticleActionPlugin = {
         footer: {
           maxlength: 160,
           warningLength: 30,
+          allowExceedMaxLength: true,
         },
       },
       performReply(ticket) {

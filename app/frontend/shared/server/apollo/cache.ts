@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { InMemoryCache } from '@apollo/client/core'
 
@@ -8,9 +8,13 @@ import type {
 } from '#shared/types/server/apollo/client.ts'
 import type { ImportGlobEagerDefault } from '#shared/types/utils.ts'
 
+import possibleTypes from './possibleTypes.ts'
+
 import type { InMemoryCacheConfig } from '@apollo/client/cache/inmemory/types'
 
-let cacheConfig: InMemoryCacheConfig = {}
+let cacheConfig: InMemoryCacheConfig = {
+  possibleTypes,
+}
 
 const cacheInitializerModules: CacheInitializerModules = import.meta.glob(
   './cache/initializer/*.ts',

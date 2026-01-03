@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import type { FormFieldValue, FormSchemaField } from '#shared/components/Form/types.ts'
 import type { EnumObjectManagerObjects } from '#shared/graphql/types.ts'
@@ -65,4 +65,6 @@ export abstract class FieldResolver {
   }
 
   abstract fieldTypeAttributes(): Partial<FormSchemaField>
+
+  transformFieldValue?(value: FormFieldValue): FormFieldValue
 }

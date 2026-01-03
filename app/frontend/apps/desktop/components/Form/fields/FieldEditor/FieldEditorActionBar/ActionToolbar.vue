@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import { onKeyDown, useEventListener, useIntersectionObserver, whenever } from '@vueuse/core'
@@ -90,11 +90,12 @@ const editorActions = useEditorActions(toRef(props, 'editor'), 'text/html')
 const invisibleActions = computed(() =>
   editorActions.actions.value
     .filter((action) => visibleActions.value.get(action.name) === false)
-    .map((action) => ({
-      ...action,
-      key: action.name,
-      noCloseOnClick: !!action.subMenu,
-    })),
+    .map((action) =>
+      Object.assign(action, {
+        key: action.name,
+        noCloseOnClick: !!action.subMenu,
+      }),
+    ),
 )
 
 const activeActionWithSubmenu = shallowRef<EditorButton['subMenu'] | null>(null)

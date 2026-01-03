@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import { computed } from 'vue'
@@ -54,6 +54,9 @@ const addonIconSize = computed(() => {
       return 'xs'
   }
 })
+
+// TODO: we should fix v-bind="props", because not everything is supported by the buttons component and
+// it will also duplicate some labels?
 
 const { popover, popoverTarget, isOpen: popoverIsOpen, toggle } = usePopover()
 </script>

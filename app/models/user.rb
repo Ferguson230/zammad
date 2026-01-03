@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class User < ApplicationModel
   include CanBeImported
@@ -1136,7 +1136,7 @@ raise 'At least one user need to have admin permissions'
     return if persisted? && previous_changes.slice(:phone, :mobile).values.flatten.none?(&:present?)
     return if destroyed? && phone.blank? && mobile.blank?
 
-    Cti::CallerId.build(self)
+    Cti::CallerId.add(self)
   end
 
   def login_was_email?

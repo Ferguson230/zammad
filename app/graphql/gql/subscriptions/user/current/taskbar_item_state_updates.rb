@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 module Gql::Subscriptions
   class User::Current::TaskbarItemStateUpdates < BaseSubscription
@@ -7,14 +7,14 @@ module Gql::Subscriptions
 
     argument :taskbar_item_id, GraphQL::Types::ID, required: true, loads: Gql::Types::User::TaskbarItemType, description: 'The taskbar item ID'
 
-    field :state_changed, Boolean, description: 'Signals that the taskbar item state has changed'
+    field :state_update_type, Gql::Types::Enum::TaskbarStateUpdateType, description: 'The type of state update'
 
     def authorized?(taskbar_item:)
       taskbar_item.present? && taskbar_item.user_id == context.current_user.id
     end
 
     def update(taskbar_item:)
-      { state_changed: true }
+      { state_update_type: object[:state_update_type] }
     end
   end
 end

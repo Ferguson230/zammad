@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class Channel < ApplicationModel
   include Channel::Assets
@@ -11,6 +11,7 @@ class Channel < ApplicationModel
 
   scope :active, -> { where(active: true) }
   scope :in_area, ->(area) { where(area: area) }
+  scope :fetchable, -> { where('area LIKE ?', '%::Account') }
 
   validates_with Validations::ChannelEmailAccountUniquenessValidator
 
@@ -32,8 +33,16 @@ fetch all accounts
 =end
 
   def self.fetch
-    channels = Channel.where('active = ? AND area LIKE ?', true, '%::Account')
-    channels.each(&:fetch)
+    active.fetchable.each(&:fetch)
+  end
+
+  # Enqueue channels for asynchronous fetching
+  # Only channels that were not updated recently are enqueued.
+  # This method does not check wether a channel was recently fetched or not.
+  # It relies on Scheduler to call it at appropriate intervals.
+  # Change period in Scheduler to adjust fetch frequency.
+  def self.fetch_async
+    active.fetchable.each { ChannelFetchJob.perform_later(it) }
   end
 
 =begin

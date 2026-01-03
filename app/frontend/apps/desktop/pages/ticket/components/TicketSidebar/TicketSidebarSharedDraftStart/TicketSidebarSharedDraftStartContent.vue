@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import { createMessage, getNode } from '@formkit/core'
@@ -142,7 +142,7 @@ const updateSharedDraft = () => {
     })
 }
 
-const { openSharedDraftFlyout } = useTicketSharedDraft(props.context.setSkipNextStateUpdate)
+const { openSharedDraftFlyout } = useTicketSharedDraft()
 
 const openFlyout = (sharedDraftStartId: string) => {
   openSharedDraftFlyout('start', sharedDraftStartId, props.context.form)

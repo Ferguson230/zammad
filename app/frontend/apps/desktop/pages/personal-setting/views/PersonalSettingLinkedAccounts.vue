@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
@@ -61,12 +61,11 @@ const providersLookup = computed(() => {
     const configuredProvider = authorizations.find(
       ({ provider }) => provider === enabledProvider.name,
     )
-    return {
-      ...enabledProvider,
+    return Object.assign(enabledProvider, {
       uid: configuredProvider?.uid,
       username: configuredProvider?.username || configuredProvider?.uid,
       authorizationId: configuredProvider?.id,
-    }
+    })
   })
 })
 
@@ -82,12 +81,16 @@ const tableHeaders: TableSimpleHeader[] = [
   },
 ]
 
-const tableItems = computed<TableItem[]>(() =>
-  providersLookup.value.map((provider, index) => ({
-    id: `${index}-${provider.name}`,
-    application: provider.label,
-    ...provider,
-  })),
+const tableItems = computed(() =>
+  providersLookup.value.map((provider, index) =>
+    Object.assign(
+      {
+        id: `${index}-${provider.name}`,
+        application: provider.label,
+      } as TableItem,
+      provider,
+    ),
+  ),
 )
 
 const loading = ref(false)

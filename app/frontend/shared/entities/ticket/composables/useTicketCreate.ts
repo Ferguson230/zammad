@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { NotificationTypes } from '#shared/components/CommonNotifications/types.ts'
 import { useNotifications } from '#shared/components/CommonNotifications/useNotifications.ts'
@@ -96,7 +96,11 @@ export const useTicketCreate = (
     )
 
     const { internalObjectAttributeValues, additionalObjectAttributeValues } =
-      useObjectAttributeFormData(ticketObjectAttributesLookup.value, formData)
+      useObjectAttributeFormData(
+        EnumObjectManagerObjects.Ticket,
+        ticketObjectAttributesLookup.value,
+        formData,
+      )
 
     // The customerId has an special handling, so we need to extract it from the internalObjectAttributeValues.
     const { customerId, ...internalValues } = internalObjectAttributeValues

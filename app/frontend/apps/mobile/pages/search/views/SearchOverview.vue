@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import { ignorableWatch } from '@vueuse/shared'
@@ -136,10 +136,9 @@ const selectRecentSearch = async (recentSearch: string) => {
   await loadByFilter(recentSearch)
 }
 
-const pluginsArray = Object.entries(searchPlugins).map(([name, plugin]) => ({
-  name,
-  ...plugin,
-}))
+const pluginsArray = Object.entries(searchPlugins).map(([name, plugin]) =>
+  Object.assign({ name }, plugin),
+)
 
 const searchPills: CommonButtonOption[] = pluginsArray.map((plugin) => ({
   value: plugin.name,

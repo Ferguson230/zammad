@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { isEqual } from 'lodash-es'
 import { storeToRefs } from 'pinia'
@@ -109,6 +109,8 @@ export const useTaskbarTab = (context?: Ref<TaskbarTabContext>) => {
 
       if (currentTaskbarTab.value.dirty === isDirty) return
 
+      // TODO: Don't know if this is needed here, when the auto save is also triggered in this situation and will reset the state...
+      // From timing perspective this can lead to problems, because this mutation will for example still return that a "articleFormIsPresent"...
       currentTaskbarTabUpdate({
         ...currentTaskbarTab.value,
         dirty: isDirty,

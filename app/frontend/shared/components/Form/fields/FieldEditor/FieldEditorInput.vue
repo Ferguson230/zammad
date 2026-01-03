@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import { useEditor, EditorContent } from '@tiptap/vue-3'
@@ -100,8 +100,8 @@ if (placeholder === '') disableExtension(PlaceholderExtensionName)
 // TODO: Maybe we need a re-creation of the editor in some edge cases... plain <-> html (check against simple channels...)
 const editorExtensions = computed(() => {
   const baseExtensions = isPlainText.value
-    ? getPlainExtensions(placeholder)
-    : getHtmlExtensions(placeholder)
+    ? getPlainExtensions(placeholder, props.context?.meta)
+    : getHtmlExtensions(placeholder, props.context?.meta)
 
   const availableExtensions = [...baseExtensions, ...customExtensions].filter((extension) => {
     const { name, options } = extension
@@ -239,7 +239,7 @@ const setEditorContent = (
   contentType: EditorContentType,
   emitUpdate?: boolean,
 ) => {
-  if (!editor.value || !content) return
+  if (!editor.value || content === undefined) return
 
   editor.value.commands.setContent(contentType === 'text/html' ? htmlCleanup(content) : content, {
     emitUpdate,
@@ -248,7 +248,10 @@ const setEditorContent = (
 
 // Set the new editor content, when the value was changed from outside (e.g. form schema update).
 const updateValueKey = props.context.node.on('input', ({ payload: newContent }) => {
-  const currentContent = isPlainText.value ? editor.value?.getText() : editor.value?.getHTML()
+  // Early return when no editor exists, keep this in mind, when we have real initial value problems.
+  if (!editor.value) return
+
+  const currentContent = getEditorContent(editor.value, contentType.value)
 
   // Skip the update if the value is identical.
   if (newContent === currentContent) return
@@ -260,8 +263,9 @@ const updateValueKey = props.context.node.on('input', ({ payload: newContent }) 
 const updateContentTypeKey = props.context.node.on(
   'prop:contentType',
   ({ payload: newContentType }) => {
-    const newContent =
-      newContentType === 'text/plain' ? editor.value?.getText() : editor.value?.getHTML()
+    if (!editor.value) return
+
+    const newContent = getEditorContent(editor.value, newContentType)
 
     setEditorContent(newContent, newContentType, true)
   },
@@ -288,6 +292,10 @@ const characters = computed(() => {
     return currentValue.value?.length || 0
   }
   if (!editor.value) return 0
+
+  // ⚠️ Keep in mind for htmlExtension we count characters based on the serialized HTML, not text content as CharacterCount does.
+  // It is opauce to the user that the counts differs from the input
+  // f.e.g. <b>bold</b> is 13 characters, but user would expect 4 characters.
   return editor.value.storage.characterCount.characters({
     node: editor.value.state.doc,
   })
@@ -342,6 +350,14 @@ const {
   wrapperInlineDesktopClasses,
   inputInlineDesktopTextStyles,
 } = useInlineMode(toRef(props, 'context'), wrapperElement)
+
+watch(isEditing, (editing) => {
+  if (!isInlineMode.value && editing) return
+
+  // augmenting type mess up the entire type interface
+  // @ts-expect-error @ts-ignore
+  editor.value?.storage?.characterCount?.clearWarnings?.()
+})
 
 const reclaimEditorFocus = (event: MouseEvent) => {
   // Place cursor at end when clicking the wrapper directly (not editor content).

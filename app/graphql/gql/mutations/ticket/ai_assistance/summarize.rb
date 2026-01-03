@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 module Gql::Mutations
   class Ticket::AIAssistance::Summarize < BaseMutation
@@ -9,8 +9,6 @@ module Gql::Mutations
 
     field :summary, Gql::Types::Ticket::AIAssistance::SummaryType, description: 'Different parts of the generated summary'
     field :analytics, Gql::Types::AI::Analytics::MetadataType, description: 'Analytics metadata', null: true
-
-    # TODO: The current cache situation is more a first PoC, it will change to an persistent store.
 
     def resolve(ticket:, regeneration_of: nil)
       Service::CheckFeatureEnabled.new(name: 'ai_assistance_ticket_summary').execute

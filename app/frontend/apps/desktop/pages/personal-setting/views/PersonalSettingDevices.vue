@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import { computed } from 'vue'
@@ -118,14 +118,13 @@ const tableActions: MenuItem[] = [
   },
 ]
 
-const currentDevices = computed<TableItem[]>(() => {
-  return (deviceListQueryResult.value?.userCurrentDeviceList || []).map((device) => {
-    return {
-      ...device,
-      current: device.fingerprint && device.fingerprint === fingerprint.value,
-    }
-  })
-})
+const currentDevices = computed<TableItem[]>(() =>
+  // oxlint-disable no-map-spread
+  (deviceListQueryResult.value?.userCurrentDeviceList || []).map((device) =>
+    // We can't use the original object, since it got sealed by Apollo Client to maintain immutability.
+    ({ ...device, current: device.fingerprint && device.fingerprint === fingerprint.value }),
+  ),
+)
 
 const helpText = computed(() =>
   i18n.t('All computers and browsers from which you logged in to Zammad appear here.'),

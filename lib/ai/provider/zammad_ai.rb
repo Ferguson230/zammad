@@ -1,9 +1,9 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class AI::Provider::ZammadAI < AI::Provider
   ZAMMAD_AI_API_BASE_URL = 'https://ai.zammad.com'.freeze
 
-  def chat(prompt_system:, prompt_user:)
+  def chat(prompt_system:, prompt_user:, prompt_image:)
     service_name = options[:service_name] || 'generic'
 
     request_body = {
@@ -13,6 +13,10 @@ class AI::Provider::ZammadAI < AI::Provider
 
     if options[:model]
       request_body[:llm] = options[:model]
+    end
+
+    if prompt_image.is_a?(::Store)
+      request_body[:images] = [Base64.strict_encode64(prompt_image.content)]
     end
 
     response = UserAgent.post(
@@ -59,7 +63,7 @@ class AI::Provider::ZammadAI < AI::Provider
       },
     )
 
-    raise AI::Provider::ResponseError, __('API server not accessible') if response.code.to_i != 200
+    validate_response!(response)
 
     nil
   end
@@ -69,7 +73,7 @@ class AI::Provider::ZammadAI < AI::Provider
   end
 
   def self.token(config)
-    config[:token].presence || ENV['ZAMMAD_AI_TOKEN']
+    ENV['ZAMMAD_AI_TOKEN'] || config[:token]
   end
 
   private

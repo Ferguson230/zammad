@@ -1,7 +1,8 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { EnumTextDirection } from '#shared/graphql/types.ts'
 import { i18n } from '#shared/i18n/index.ts'
@@ -55,10 +56,17 @@ const handleSelectRadio = (item: DropdownItem) => {
   toggle()
 }
 
+const router = useRouter()
+
 const actionItems = computed(() =>
+  // oxlint-disable no-map-spread
   props.items.map((item) => ({
     ...item,
-    onClick: () => emit('handle-action', item),
+    // We can't use the original object, since it would overwrite the memory reference to the prop as well
+    onClick: () => {
+      emit('handle-action', item)
+      item.onClick?.(item, router)
+    },
   })),
 )
 </script>

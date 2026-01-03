@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { getAllByRole, getByRole, queryByRole, waitFor } from '@testing-library/vue'
 import { cloneDeep } from 'lodash-es'
@@ -1127,6 +1127,7 @@ describe('Form.vue - Form Updater - special situtations', () => {
     checkEmptyDisplayValue(wrapper, 'State')
 
     await selectValue(wrapper, 'Type', 'Incident')
+
     await waitUntil(() => mockFormUpdaterApi.calls.resolve === 2)
 
     checkDisplayValue(wrapper, 'State', 'new')

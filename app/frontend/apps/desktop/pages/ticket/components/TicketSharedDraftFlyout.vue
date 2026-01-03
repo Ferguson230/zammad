@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import { computed, toRef } from 'vue'
@@ -35,7 +35,6 @@ const props = defineProps<{
   draftType: 'start' | 'detail-view'
   metaInformationQuery: OperationQueryFunction
   deleteMutation: OperationMutationFunction
-  setSkipNextStateUpdate?: (skip: boolean) => void
 }>()
 
 const emit = defineEmits<{
@@ -144,9 +143,6 @@ const applySharedDraft = async (sharedDraftId: string) => {
     sharedDraftId,
     draftType: props.draftType,
   }
-
-  // Skip subscription for the current taskbar tab, to avoid unnecessary form updater requests.
-  props.setSkipNextStateUpdate?.(true)
 
   triggerFormUpdater({ additionalParams })
 

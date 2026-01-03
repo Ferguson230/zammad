@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import type { AvatarOrganization } from '#shared/components/CommonOrganizationAvatar'
@@ -31,7 +31,7 @@ defineProps<Props>()
     no-focus-styling
   >
     <template #default="slotProps">
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 w-fit">
         <CommonOrganizationAvatar
           class="rounded-full outline-1 outline-transparent group-hover:outline-blue-600 group-hover:dark:outline-blue-900 group-focus-visible:outline-blue-800"
           :class="{

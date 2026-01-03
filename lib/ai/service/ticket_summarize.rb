@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 class AI::Service::TicketSummarize < AI::Service
   def self.lookup_attributes(context_data, locale)
@@ -10,10 +10,7 @@ class AI::Service::TicketSummarize < AI::Service
   end
 
   def self.lookup_version(context_data, _locale)
-    context_data[:ticket]
-      .articles
-      .without_system_notifications
-      .cache_version(:created_at)
+    context_data[:articles].cache_version(:created_at)
   end
 
   def persistable?

@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 require 'test_helper'
 
@@ -1094,7 +1094,7 @@ class UserTest < ActiveSupport::TestCase
     )
     assert_equal(1, Authorization.where(user_id: agent1_id).count)
 
-    Cti::CallerId.maybe_add(
+    Cti::CallerId.create!(
       caller_id: '49123456789',
       comment:   'Hairdresser Bob Smith, San Francisco', # optional
       level:     'maybe', # known|maybe

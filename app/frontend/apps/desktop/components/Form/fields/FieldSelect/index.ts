@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import createInput from '#shared/form/core/createInput.ts'
 import addLink from '#shared/form/features/addLink.ts'
@@ -19,7 +19,7 @@ const fieldDefinition = createInput(
     'options',
     'rejectNonExistentValues',
     'sorting',
-    'noInitialAutoPreselect',
+    'noAutoPreselect',
   ],
   {
     features: [addLink, formUpdaterTrigger(), removeValuesForNonExistingOptions],

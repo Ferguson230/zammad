@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
@@ -34,6 +34,12 @@ const enableInlineEdit = computed(
       input: 'min-h-7!',
     }"
     type="editor"
+    :meta="{
+      footer: {
+        maxlength: props.attribute?.dataOption?.maxlength,
+        disabled: true,
+      },
+    }"
     :label-sr-only="true"
     :label="attribute.display"
     :reset="handleReset"

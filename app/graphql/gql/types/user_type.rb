@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 module Gql::Types
   class UserType < Gql::Types::BaseObject
@@ -43,6 +43,7 @@ module Gql::Types
       field :fax, String
       field :mobile, String
       field :vip, Boolean
+      field :source, String
       field :verified, Boolean
       field :active, Boolean
       field :out_of_office, Boolean

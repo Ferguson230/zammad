@@ -1,4 +1,4 @@
-// Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+// Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev'
 import * as domMatchers from '@testing-library/jest-dom/matchers'
@@ -167,12 +167,12 @@ vi.mock('#shared/components/CommonNotifications/useNotifications.ts', async () =
 })
 
 // don't rely on tiptap, because it's not supported in JSDOM
-vi.mock('#shared/components/Form/fields/FieldEditor/FieldEditorInput.vue', async () => {
+vi.mock('#shared/components/Form/fields/FieldEditor/FieldEditorWrapper.vue', async () => {
   const { computed, defineComponent } = await import('vue')
 
   // eslint-disable-next-line vue/one-component-per-file
   const component = defineComponent({
-    name: 'FieldEditorInput',
+    name: 'FieldEditorWrapper',
     props: { context: { type: Object, required: true } },
     setup(props) {
       const value = computed({
@@ -180,6 +180,13 @@ vi.mock('#shared/components/Form/fields/FieldEditor/FieldEditorInput.vue', async
         set: (value) => {
           props.context.node.input(value)
         },
+      })
+
+      // eslint-disable-next-line vue/no-mutating-props
+      Object.assign(props.context, {
+        focus: vi.fn(),
+        addSignature: vi.fn(),
+        removeSignature: vi.fn(),
       })
 
       return {
@@ -190,6 +197,7 @@ vi.mock('#shared/components/Form/fields/FieldEditor/FieldEditorInput.vue', async
     },
     template: `<textarea :id="id" :name="name" v-model="value" />`,
   })
+
   return { __esModule: true, default: component }
 })
 

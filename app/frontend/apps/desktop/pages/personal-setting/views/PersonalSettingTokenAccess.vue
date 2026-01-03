@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/ -->
+<!-- Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/ -->
 
 <script setup lang="ts">
 import { computed } from 'vue'
@@ -152,12 +152,14 @@ const tableActions: MenuItem[] = [
 ]
 
 const currentAccessTokens = computed<TableItem[]>(() => {
-  return (accessTokenListQueryResult.value?.userCurrentAccessTokenList || []).map((accessToken) => {
-    return {
+  // oxlint-disable no-map-spread
+  return (accessTokenListQueryResult.value?.userCurrentAccessTokenList || []).map(
+    (accessToken) => ({
+      // We can't use the original object, since it got sealed by Apollo Client to maintain immutability.
       ...accessToken,
       permissions: accessToken.preferences?.permission?.join(', ') || '',
-    }
-  })
+    }),
+  )
 })
 
 const currentAccessTokenPresent = computed(() => currentAccessTokens.value.length > 0)

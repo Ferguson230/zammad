@@ -1,4 +1,4 @@
-# Copyright (C) 2012-2025 Zammad Foundation, https://zammad-foundation.org/
+# Copyright (C) 2012-2026 Zammad Foundation, https://zammad-foundation.org/
 
 require 'rails_helper'
 
@@ -13,6 +13,7 @@ RSpec.describe AI::Service::TicketSummarize do
   let(:context_data) do
     {
       ticket:,
+      articles: ticket.articles.without_system_notifications,
     }
   end
 
